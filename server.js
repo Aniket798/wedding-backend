@@ -27,14 +27,14 @@ app.listen(5000, () => {
 })
 
 app.post('/expenses', (req, res) => {
-    const { id, title, category, amount, date, notes } = req.body
+    const { id, title, category, amount, paid, date, notes } = req.body
 
     const sql = `
-    INSERT INTO expenses (id, title, category, amount, date, notes)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO expenses (id, title, category, amount, paid, date, notes)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `
 
-    db.query(sql, [id, title, category, amount, date, notes], (err) => {
+    db.query(sql, [id, title, category, amount, paid||0, date, notes], (err) => {
         if (err) return res.status(500).send(err)
         res.send('Expense saved')
     })
@@ -74,15 +74,15 @@ app.delete('/expenses/:id', (req, res) => {
 
 app.put('/expenses/:id', (req, res) => {
   const { id } = req.params
-  const { title, category, amount, date, notes } = req.body
+  const { title, category, amount, paid, date, notes } = req.body
 
   const sql = `
     UPDATE expenses
-    SET title=?, category=?, amount=?, date=?, notes=?
+    SET title=?, category=?, amount=?, paid=?, date=?, notes=?
     WHERE id=?
   `
 
-  db.query(sql, [title, category, amount, date, notes, id], (err) => {
+  db.query(sql, [title, category, amount, paid, date, notes, id], (err) => {
     if (err) return res.status(500).send(err)
     res.send('Updated')
   })
