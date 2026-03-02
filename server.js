@@ -7,11 +7,19 @@ app.use(cors())
 app.use(express.json())
 
 // MySQL connection
-const db = mysql.createConnection({
+/*const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'Myworld@123',
     database: 'wedding_db'
+})*/
+
+const db = mysql.createConnection({
+    host: process.env.MYSQLHOST,
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    port: process.env.MYSQLPORT
 })
 
 db.connect(err => {
@@ -22,9 +30,15 @@ db.connect(err => {
     }
 })
 
-app.listen(5000, () => {
-    console.log('Server running on port 5000')
-})
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+app.get("/", (req, res) => {
+    res.send("Wedding Manager Backend Running 🚀");
+});
 
 app.post('/expenses', (req, res) => {
     const { id, title, category, amount, paid, date, notes } = req.body
