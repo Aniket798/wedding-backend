@@ -14,13 +14,9 @@ app.use(express.json())
     database: 'wedding_db'
 })*/
 
-const db = mysql.createConnection({
-    host: process.env.MYSQLHOST,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD,
-    database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT
-})
+const mysql = require("mysql2");
+
+const db = mysql.createConnection(process.env.MYSQL_URL);
 
 db.connect(err => {
     if (err) {
