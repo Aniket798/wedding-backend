@@ -14,8 +14,9 @@ app.use(express.json())
     database: 'wedding_db'
 })*/
 
-const db = mysql.createConnection(process.env.MYSQL_URL);
-
+const db = mysql.createConnection({
+  uri: process.env.MYSQL_URL
+});
 db.connect(err => {
     if (err) {
         console.error('DB connection failed:', err)
